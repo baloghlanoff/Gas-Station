@@ -1,6 +1,8 @@
 from tkinter import *
 from tkinter import ttk
 from PIL import Image, ImageTk
+from tkinter import messagebox
+
 
 root = Tk()
 root.geometry("500x500")
@@ -10,93 +12,96 @@ root.state("zoomed")
 screenWidth = root.winfo_screenwidth()
 screenHeight = root.winfo_screenheight()
 
-# girisFrame = Frame(root, width=screenWidth, height=screenHeight)
-# girisFrame.pack(fill="both", expand=True)
+girisFrame = Frame(root, width=screenWidth, height=screenHeight)
+girisFrame.pack(fill="both", expand=True)
 
 
 
-# image = Image.open("C:\\Users\\balog\\Desktop\\Gas Station\\GasStation\\gas-station-with-oil-pump-and-market-on-road-free-vector.jpg")
-# image = image.resize((screenWidth, screenHeight))
-# bgPhoto = ImageTk.PhotoImage(image)
+image = Image.open("C:\\Users\\balog\\Desktop\\Gas Station\\GasStation\\gas-station-with-oil-pump-and-market-on-road-free-vector.jpg")
+image = image.resize((screenWidth, screenHeight))
+bgPhoto = ImageTk.PhotoImage(image)
 
-# bgFrame = Frame(girisFrame)
-# bgFrame.place(x=0, y=0, relwidth=1, relheight=1)
+bgFrame = Frame(girisFrame)
+bgFrame.place(x=0, y=0, relwidth=1, relheight=1)
 
-# bgLabel = Label(bgFrame, image=bgPhoto)
-# bgLabel.pack(fill="both", expand=True)
-
-
+bgLabel = Label(bgFrame, image=bgPhoto)
+bgLabel.pack(fill="both", expand=True)
 
 
-# def startGame():
-#     for widget in girisFrame.winfo_children():  # winfo_children() ekrandaki butun widgetleri verir.
-#        if widget != bgFrame:
-#             widget.destroy()
-#     root.after(3000, game)
-#     # game()   #-----------------
-#     Label(girisFrame, text="Yüklənir...", font=("Verdana Bold", 44, "bold"), width=screenWidth, height= 2, fg="red", bg="#8dc79d").pack(pady=300)
-
-# def showStartScreen():
-#     for widget in girisFrame.winfo_children():
-#         if widget != bgFrame:
-#             widget.destroy()
-
-#     basLabel = Label(girisFrame, text="⛽ GAS STATION ⛽", font=("Verdana Bold", 54, "bold"), width=screenWidth, height= 2, fg="#f4f4f4", bg="#8dc79d")
-#     basLabel.pack(pady=(0, 150))
-#     Button(girisFrame, text="Start", font=("Georgia", 40, "bold"), command=startGame, bg="green", fg="#f4f4f4", width=15).pack(pady=(50, 0))
-#     Button(girisFrame, text="Quit", font=("Georgia", 40, "bold"), command=root.quit, bg="red", fg="#f4f4f4", width=15).pack(pady=30)
 
 
-# def game():
-#     global screenHeight, screenWidth, bgPhoto1, carImg, masin, gameFrame, pump_x, pump_y
-#     girisFrame.forget()
+def startGame():
+    for widget in girisFrame.winfo_children():  # winfo_children() ekrandaki butun widgetleri verir.
+       if widget != bgFrame:
+            widget.destroy()
+    # root.after(3000, game) -----------------------------------------------
+    game()   #-----------------
+    Label(girisFrame, text="Yüklənir...", font=("Verdana Bold", 44, "bold"), width=screenWidth, height= 2, fg="red", bg="#8dc79d").pack(pady=300)
 
-#     gameFrame = Canvas(root, width=screenWidth, height=screenHeight)
-#     gameFrame.pack(fill="both", expand=True)
+def showStartScreen():
+    for widget in girisFrame.winfo_children():
+        if widget != bgFrame:
+            widget.destroy()
 
-#     image1 = Image.open("C:\\Users\\balog\\Desktop\\Gas Station\\GasStation\\A whimsical cartoon illustration of an empty gas station and a bustling market, viewed from the front, both buildings occupying the full frame. The photo should look lie this.jpg")
-#     image1 = image1.resize((screenWidth, screenHeight))
-#     bgPhoto1 = ImageTk.PhotoImage(image1)
-#     gameFrame.create_image(0, 0, image=bgPhoto1, anchor="nw")
-
-
-#     pump_x = 400  #}
-#     pump_y = 600  #}   Dayanmaq istediyimiz kordinatin x ve y kordinatlari
-
-#     root.bind("<KeyPress>", moveCar)    #keypress kodunu yazib klaviatura ile hereket etdirmeyi aktiv edirik.
-
-#     gameFrame.create_text(pump_x-50, pump_y+195, text="➡", font=("Arial", 60), fill="red")   #Ox yaradiriq ki hara getmeli oldugumuzu bildirsin
-#     gameFrame.create_text(pump_x-120, pump_y-500, text="Ox simvoluna gedin.", fill="red", font=("Comic Sans Ms", 40, "bold"))
+    basLabel = Label(girisFrame, text="⛽ GAS STATION ⛽", font=("Verdana Bold", 54, "bold"), width=screenWidth, height= 2, fg="#f4f4f4", bg="#8dc79d")
+    basLabel.pack(pady=(0, 150))
+    Button(girisFrame, text="Start", font=("Georgia", 40, "bold"), command=startGame, bg="green", fg="#f4f4f4", width=15).pack(pady=(50, 0))
+    Button(girisFrame, text="Quit", font=("Georgia", 40, "bold"), command=root.quit, bg="red", fg="#f4f4f4", width=15).pack(pady=30)
 
 
-#     image2 = Image.open("C:\\Users\\balog\\Desktop\\Gas Station\\GasStation\\Adobe Express - file (16).png")
-#     image2 = image2.resize((500, 370))  # kiçiltmək üçün
-#     carImg = ImageTk.PhotoImage(image2)
-#     masin = gameFrame.create_image(screenWidth, screenHeight, image=carImg, anchor="se")   #canvasla yaradiriq ki backgroundu olmasin
+def game():
+    global screenHeight, screenWidth, bgPhoto1, carImg, masin, gameFrame, pump_x, pump_y, klavis
+    girisFrame.forget()
+
+    gameFrame = Canvas(root, width=screenWidth, height=screenHeight)
+    gameFrame.pack(fill="both", expand=True)
+
+    image1 = Image.open("C:\\Users\\balog\\Desktop\\Gas Station\\GasStation\\A whimsical cartoon illustration of an empty gas station and a bustling market, viewed from the front, both buildings occupying the full frame. The photo should look lie this.jpg")
+    image1 = image1.resize((screenWidth, screenHeight))
+    bgPhoto1 = ImageTk.PhotoImage(image1)
+    gameFrame.create_image(0, 0, image=bgPhoto1, anchor="nw")
 
 
-#     x, y = gameFrame.coords(masin)   #masinin kordinatlarini goturur
+    pump_x = 400  #}
+    pump_y = 600  #}   Dayanmaq istediyimiz kordinatin x ve y kordinatlari
+
+    root.bind("<KeyPress>", moveCar)    #keypress kodunu yazib klaviatura ile hereket etdirmeyi aktiv edirik.
+
+    gameFrame.create_text(pump_x-50, pump_y+195, text="➡", font=("Arial", 60), fill="red")   #Ox yaradiriq ki hara getmeli oldugumuzu bildirsin
+    klavis = gameFrame.create_text(pump_x+200, pump_y-500, text=" 'A' ve 'D' klavislerinden istifade ederek OX simvoluna gedin.", fill="red", font=("Comic Sans Ms", 30, "bold"))
 
 
-# def moveCar(event):
-#     global gameFrame, masin, pump_x, pump_y, fuelSelection, bgPump
-#     step = 15   #masinin nece pixel-pixel hereket edeceyini yazmisiq
-#     x, y = gameFrame.coords(masin)   
+    image2 = Image.open("C:\\Users\\balog\\Desktop\\Gas Station\\GasStation\\Adobe Express - file (16).png")
+    image2 = image2.resize((500, 370))  # kiçiltmək üçün
+    carImg = ImageTk.PhotoImage(image2)
+    masin = gameFrame.create_image(screenWidth, screenHeight, image=carImg, anchor="se")   #canvasla yaradiriq ki backgroundu olmasin
 
-#     if abs(x - pump_x-170) < 50 and abs(y - pump_y-400) < 50:    #abs kodu deqiq hesablama ucun istifade olunur. 
-#         return
+
+    x, y = gameFrame.coords(masin)   #masinin kordinatlarini goturur
+
+
+def moveCar(event):
+    global gameFrame, masin, pump_x, pump_y, fuelSelection, bgPump
+    step = 50   #masinin nece pixel-pixel hereket edeceyini yazmisiq           ------------------------------------------------
+    x, y = gameFrame.coords(masin)   
+
+    if abs(x - pump_x-170) < 50 and abs(y - pump_y-400) < 50:    #abs kodu deqiq hesablama ucun istifade olunur. 
+        return
     
-#     if event.keysym == "a":    #keysym kodu klaviaturayla basdigimiz klavisin deyerini goturur.
-#         x -= step
-#     elif event.keysym == "d":
-#         x += step
+    if event.keysym == "a":    #keysym kodu klaviaturayla basdigimiz klavisin deyerini goturur.
+        x -= step
+    elif event.keysym == "d":
+        x += step
 
-#     gameFrame.coords(masin, x, y)    #Son oldugu yerin kordinatlarini gotururuk
+    gameFrame.coords(masin, x, y)    #Son oldugu yerin kordinatlarini gotururuk
 
-#     if abs(x - pump_x-170) < 50 and abs(y - pump_y-400) < 50:    #abs kodu deqiq hesablama ucun istifade olunur. 
-#         root.after(1500)
-#         gameFrame.forget()
-#         openFuelSelection()
+    if abs(x - pump_x-170) < 50 and abs(y - pump_y-400) < 50:    #abs kodu deqiq hesablama ucun istifade olunur. 
+        # root.after(1500)
+        gameFrame.forget()
+        openFuelSelection()
+
+
+
 
 
 a92Frame = None
@@ -104,6 +109,7 @@ a95Frame = None
 dieselFrame = None
 selectedFuel = None
 fuelTotal = 0
+
 
 def hideAllFrames():
     global a92Frame, a95Frame, dieselFrame
@@ -113,6 +119,7 @@ def hideAllFrames():
         a95Frame.place_forget()
     if dieselFrame: 
         dieselFrame.place_forget()
+
 
 
 def openFuelSelection():
@@ -125,17 +132,35 @@ def openFuelSelection():
     bgPump = ImageTk.PhotoImage(pumpImg)
     fuelSelection.create_image(0, 0, image=bgPump, anchor="nw")
 
+
     
-    def submit():
+    def doldur():
         global fuelTotal
         if selectedFuel is None:
-            print("Heç bir yanacaq seçilməyib!")
+            messagebox.showwarning("Warning", "Hec bir yanacaq secilmeyib")
             return
-        fuelTotal = litr.get() * litrPrice
-        print(f"Seçilən yanacaq: {selectedFuel}, Litr: {litr.get()}, Ödəniş: {round(fuelTotal, 1)} AZN")
+        fuelTotal = litr.get() * litrPrice  
+        
+        #Progress Bar
+        prBar = ttk.Progressbar(fuelSelection, orient=HORIZONTAL, length=500, maximum=100)
+        prBar.place(x=50, y=50)
 
-    Button(fuelSelection, text="Submit", font=("Arial", 30), width=13, bg="green", fg="white",
-           command=submit).place(x=635, y=30)
+        def updateBar(value=0):
+            if value <= 100:
+                prBar["value"] = value
+                root.after(0, updateBar, value+5)     #0yox200
+            else:
+                fuelSelection.create_text(1200, 70, text="Benzin doldu", font=("Georgia", 40, "bold"), fill="red")
+                # root.after(2000, switchToGame)   #----------------
+                switchToGame()
+
+        def switchToGame():
+            fuelSelection.forget()
+            gameFrame.pack(fill=BOTH, expand=True)
+            gameFrame.delete(klavis)
+            goToMarket()
+        updateBar()
+
 
 
     def a92():
@@ -251,13 +276,87 @@ def openFuelSelection():
     Button(fuelSelection, text="A92", font=("Comic Sans Ms", 25), width=5, bg="yellow", command=a92).place(x=320, y=730)
     Button(fuelSelection, text="A95", font=("Comic Sans Ms", 25), width=5, bg="red", fg="white", command=a95).place(x=730, y=730)
     Button(fuelSelection, text="Diesel", font=("Comic Sans Msa", 25), width=5, bg="blue", fg="white", command=diesel).place(x=1140, y=730)
+    Button(fuelSelection, text="Doldur", font=("Arial", 30), width=13, bg="green", fg="white", command=doldur).place(x=635, y=30)
 
 
+adam = None
+adamId = None
+adam_x, adam_y = 310, 740   #baslangic kordinatlari
+symbol_x, symbol_y = 1200, 800
+
+def goToMarket():   
+    global magazaSual, beliBut, xeyrBut
+
+    def beli():
+        global masin, masindanDus, geriGet
+        root.after(1000)
+        gameFrame.delete(magazaSual)
+        beliBut.destroy()
+        xeyrBut.destroy()
+
+        masindanDus = Button(gameFrame, text="Maşından Düş", font=("Georgia", 30, "bold"), width=15, fg="white", bg="green", command=masindanDusmekFunc)
+        masindanDus.place(x=400, y=250)
+
+        def back():
+            global geriGet
+            goToMarket()
+            masindanDus.destroy()
+            geriGet.destroy()
+            gameFrame.delete(adamId)
+            gameFrame.delete(ox)
+        geriGet = Button(gameFrame, text="Geri", font=("Georgia", 30, "bold"), width=15, fg="white", bg="red", command=back)
+        geriGet.place(x=850, y=250)
+        
+
+    def xeyr():
+        pass
     
+    def masindanDusmekFunc():
+        global adam, adamId, adam_x, adam_y, symbol_x, symbol_y, ox
+        adam_x, adam_y = 310, 740
+        masindanDus.destroy()
+        geriGet.place(x=600, y=250)
+        ox = gameFrame.create_text(symbol_x, symbol_y, text="➡", font=("Arial", 60), fill="red")
+        adamImg = Image.open("C:\\Users\\balog\\Desktop\\Gas Station\\GasStation\\Adobe Express - file (17).png")
+        adamImg = adamImg.resize((250,250))
+        adam = ImageTk.PhotoImage(adamImg)
+        adamId = gameFrame.create_image(adam_x, adam_y, image=adam)    #310-760
 
-openFuelSelection()
+    def move(event):
+        global adam_x, adam_y
+        step1 = 50
+
+        if abs(adam_x - symbol_x-10) < 50 and abs(adam_y - symbol_y+100) < 50:   
+            return
+
+        if event.keysym == "Left":
+            adam_x -= step1
+        elif event.keysym == "Right":
+            adam_x += step1
+
+        gameFrame.coords(adamId, adam_x, adam_y)
+        
+        if abs(adam_x - symbol_x-10) < 50 and abs(adam_y - symbol_y+100) < 50:   
+            gameFrame.forget()
+
+    # Klavisleri aktiv edirik
+    root.bind("<Left>", move)
+    root.bind("<Right>", move)
 
 
-# showStartScreen()
+    magazaSual = gameFrame.create_text(800, 150, text="Mağazaya getmək istəyirsiniz?", font=("Georgia", 40, "bold"), fill="red")
+    beliBut = Button(gameFrame, text="Bəli", font=("Georgia", 30, "bold"), width=8, fg="white", bg="green", command=beli)
+    beliBut.place(x=550, y=250)
+    xeyrBut = Button(gameFrame, text="Xeyr", font=("Georgia", 30, "bold"), width=8, fg="white", bg="red", command=xeyr)
+    xeyrBut.place(x=850, y=250)
+
+
+
+
+
+# openFuelSelection()
+
+
+showStartScreen()
 
 root.mainloop() 

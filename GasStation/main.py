@@ -50,7 +50,7 @@ def showStartScreen():
 
 
 def game():
-    global screenHeight, screenWidth, bgPhoto1, carImg, masin, gameFrame, pump_x, pump_y, klavis
+    global screenHeight, screenWidth, bgPhoto1, carImg, masin, gameFrame, pump_x, pump_y, klavis, x, y
     girisFrame.forget()
 
     gameFrame = Canvas(root, width=screenWidth, height=screenHeight)
@@ -67,8 +67,8 @@ def game():
 
     root.bind("<KeyPress>", moveCar)    #keypress kodunu yazib klaviatura ile hereket etdirmeyi aktiv edirik.
 
-    gameFrame.create_text(pump_x-50, pump_y+195, text="", font=("Arial", 60), fill="red")   #Ox yaradiriq ki hara getmeli oldugumuzu bildirsin
-    klavis = gameFrame.create_text(pump_x+350, pump_y-500, text=" 'A' ve 'D' klavişlərindən istifadə edərək AĞ BENZİN POMPASIna yaxınlaşın", fill="red", font=("Comic Sans Ms", 30, "bold"))
+    gameFrame.create_text(350, 795, text="", font=("Arial", 60), fill="red")   #Ox yaradiriq ki hara getmeli oldugumuzu bildirsin
+    klavis = gameFrame.create_text(750, 100, text=" 'A' ve 'D' klavişlərindən istifadə edərək AĞ BENZİN POMPASIna yaxınlaşın", fill="red", font=("Comic Sans Ms", 30, "bold"))
 
 
     image2 = Image.open("GasStation\\car.png")
@@ -122,7 +122,7 @@ def hideAllFrames():
 
 
 def openFuelSelection():
-    global fuelSelection, bgPump
+    global fuelSelection, bgPump, a92But, a95But, dieselBut, doldurBut
     fuelSelection = Canvas(root, width=screenWidth, height=screenHeight)
     fuelSelection.pack(fill=BOTH, expand=True)
 
@@ -135,8 +135,17 @@ def openFuelSelection():
     
     def doldur():
         global fuelTotal
+        doldurBut.config(state=DISABLED)
+        a92But.config(state=DISABLED)
+        a95But.config(state=DISABLED)
+        dieselBut.config(state=DISABLED)
+
         if selectedFuel is None:
             messagebox.showwarning("Warning", "Hec bir yanacaq secilmeyib")
+            doldurBut.config(state=NORMAL)
+            a92But.config(state=NORMAL)
+            a95But.config(state=NORMAL)
+            dieselBut.config(state=NORMAL)
             return
         fuelTotal = litr.get() * litrPrice  
         
@@ -271,10 +280,14 @@ def openFuelSelection():
         Button(dieselFrame, text="+", font=("Arial", 20), width=1, height=1, command=increase).place(x=90, y=0)
 
 
-    Button(fuelSelection, text="A92", font=("Comic Sans Ms", 25), width=5, bg="yellow", command=a92).place(x=320, y=730)
-    Button(fuelSelection, text="A95", font=("Comic Sans Ms", 25), width=5, bg="red", fg="white", command=a95).place(x=730, y=730)
-    Button(fuelSelection, text="Diesel", font=("Comic Sans Msa", 25), width=5, bg="blue", fg="white", command=diesel).place(x=1140, y=730)
-    Button(fuelSelection, text="Doldur", font=("Arial", 30), width=13, bg="green", fg="white", command=doldur).place(x=635, y=30)
+    a92But = Button(fuelSelection, text="A92", font=("Comic Sans Ms", 25), width=5, bg="yellow", command=a92)
+    a92But.place(x=320, y=730)
+    a95But = Button(fuelSelection, text="A95", font=("Comic Sans Ms", 25), width=5, bg="red", fg="white", command=a95)
+    a95But.place(x=730, y=730)
+    dieselBut = Button(fuelSelection, text="Diesel", font=("Comic Sans Msa", 25), width=5, bg="blue", fg="white", command=diesel)
+    dieselBut.place(x=1140, y=730)
+    doldurBut = Button(fuelSelection, text="Doldur", font=("Arial", 30), width=13, bg="green", fg="white", command=doldur)
+    doldurBut.place(x=635, y=30)
 
 
 adam = None
@@ -309,10 +322,36 @@ def goToMarket():
         
 
     def xeyr():
-        pass
+        gameFrame.delete(magazaSual)
+        beliBut.destroy()
+        xeyrBut.destroy()
+
+        def odemek():
+            def destroyAndGo():
+                odeFrame.destroy()
+                animateLeft()
+                
+            def animateLeft(steps=105, delay=30):
+                if steps > 0:
+                    gameFrame.move(masin, -5, 0)
+                    root.after(delay, lambda: animateLeft(steps-1, delay))
+
+            def ode2():
+                odeBut2.destroy()
+                Label(odeFrame, text="Ödəniş edildi", font=("Comic Sans Ms", 20), bg="#fff", fg="green").place(x=190, y=235)
+                ode.destroy()
+                root.after(2000, destroyAndGo)
+
+            odeFrame = Frame(gameFrame, width=550, height=300, bg="#fff")
+            odeFrame.place(x=20, y=50)
+            Label(odeFrame, text=f"\n\nYanacaq üçün ödənilməli məbləğ:\n  {round(fuelTotal, 1)} Azn\n", font=("Comic Sans Ms", 23), bg="#fff").place(x=0, y=0)
+            odeBut2 = Button(odeFrame, text="Ödə", font=("Georgia", 23, "bold"), width=7, fg="white", bg="green", command=ode2)
+            odeBut2.place(x=180, y=230)
+        ode = Button(gameFrame, text="Ödə", font=("Georgia", 30, "bold"), width=15, fg="white", bg="green", command=odemek)
+        ode.place(x=600, y=250)
     
     def masindanDusmekFunc():
-        global adam, adamId, adam_x, adam_y, symbol_x, symbol_y, ox, yazi1, adamFlip, firstCordinate_x, firstCordinate_y
+        global adam, adamId, adam_x, adam_y, symbol_x, symbol_y, ox, yazi1, adamFlip, firstCordinate_x, firstCordinate_y, imageFlipped
         adam_x, adam_y = 310, 740
         masindanDus.destroy()
         geriGet.place(x=600, y=250)
@@ -333,17 +372,19 @@ def goToMarket():
 
     def move(event):
         global adam_x, adam_y, adam, adamFlip, adamId
-        step1 = 15
+        step1 = 10
 
         if abs(adam_x - symbol_x-10) < 50 and abs(adam_y - symbol_y+100) < 50:   
             return
 
         if event.keysym == "Left":
             adam_x -= step1
-            gameFrame.itemconfig(adamId, image=adamFlip)
+            if adamId is not None:
+                gameFrame.itemconfig(adamId, image=adamFlip)
         elif event.keysym == "Right":
             adam_x += step1
-            gameFrame.itemconfig(adamId, image=adam)
+            if adamId is not None:
+                gameFrame.itemconfig(adamId, image=adam)
 
         gameFrame.coords(adamId, adam_x, adam_y)
         
@@ -549,6 +590,7 @@ def market():
         Button(hotdogFrame, text="+", font=("Arial", 25), width=2, height=2, command=increase).place(x=205, y=0)
 
     def updateTotal():
+        global totalFood
         totalfd = burgerCount.get()*burgerPrice + pizzaCount.get()*pizzaPrice + cheesyCount.get()*cheesyPrice + hotdogCount.get()*hotdogPrice
         totalFood = round(totalfd, 1)
         totalLabel.config(text=f"Total: {totalFood} Azn")
@@ -559,7 +601,7 @@ def market():
 
     def switchToGame():
         global yazi2
-        yazi2 = gameFrame.create_text(350, 100, text="Maşına qayıdın", font=("Comic Sans Ms", 40), fill="red")
+        yazi2 = gameFrame.create_text(450, 100, text="Maşına qayıdın", font=("Comic Sans Ms", 40), fill="red")
         marketFrame.forget()
         gameFrame.pack(fill=BOTH, expand=True)
         gameFrame.delete(magazaSual, ox, yazi1)
@@ -594,8 +636,32 @@ def market():
                         adamId = None
                     minButton.destroy()
                     gameFrame.delete(yazi2)
-                    geriGet = Button(gameFrame, text="Ödə", font=("Georgia", 30, "bold"), width=15, fg="white", bg="green")
-                    geriGet.place(x=600, y=250)
+
+
+                    def odemek():
+                        def dest():
+                            odeFrame.destroy()
+                        def ode2():
+                            odeBut2.destroy()
+                            Label(odeFrame, text="Ödəniş edildi", font=("Comic Sans Ms", 20), bg="#fff", fg="green").place(x=190, y=235)
+                            root.after(2000, dest)
+                            root.after(1000, animateLeft)
+                                
+                        def animateLeft(steps=105, delay=30):
+                            if steps > 0:
+                                gameFrame.move(masin, -5, 0)
+                                root.after(delay, lambda: animateLeft(steps-1, delay))
+
+
+                        odeFrame = Frame(gameFrame, width=550, height=300, bg="#fff")
+                        odeFrame.place(x=20, y=50)
+                        Label(odeFrame, text=f"Yanacaq üçün ödənilməli məbləğ: {round(fuelTotal, 1)}\n\nYemək üçün ödənilməli məbləğ: {round(totalFood, 1)}\n\nÜmumi məbləğ: {fuelTotal+totalFood}\n", font=("Comic Sans Ms", 23), bg="#fff").place(x=0, y=0)
+                        odeBut2 = Button(odeFrame, text="Ödə", font=("Georgia", 23, "bold"), width=7, fg="white", bg="green", command=ode2)
+                        odeBut2.place(x=180, y=230)
+                        ode.destroy()
+                    ode = Button(gameFrame, text="Ödə", font=("Georgia", 30, "bold"), width=15, fg="white", bg="green", command=odemek)
+                    ode.place(x=600, y=250)
+
 
 
                 minButton = Button(gameFrame, text="Min", fg="white", bg="green", font=("Georgia", 20), command=minBut)

@@ -331,22 +331,30 @@ def goToMarket():
                 odeFrame.destroy()
                 animateLeft()
                 
+            def yeniden():
+                gameFrame.forget()
+                girisFrame.pack(fill=BOTH, expand=True)
+                showStartScreen()
+
             def animateLeft(steps=105, delay=30):
                 if steps > 0:
                     gameFrame.move(masin, -5, 0)
                     root.after(delay, lambda: animateLeft(steps-1, delay))
+                else:
+                    butRestart = Button(gameFrame, text="Yenidən oyna", fg="white", bg="green", font=("Comic Sans Ms", 45), command=yeniden)
+                    butRestart.place(x=550, y=40)
 
             def ode2():
                 odeBut2.destroy()
-                Label(odeFrame, text="Ödəniş edildi", font=("Comic Sans Ms", 20), bg="#fff", fg="green").place(x=190, y=235)
+                Label(odeFrame, text="Ödəniş edildi", font=("Comic Sans Ms", 20), bg="#fff", fg="green").place(x=210, y=235)
                 ode.destroy()
                 root.after(2000, destroyAndGo)
 
             odeFrame = Frame(gameFrame, width=550, height=300, bg="#fff")
             odeFrame.place(x=20, y=50)
-            Label(odeFrame, text=f"\n\nYanacaq üçün ödənilməli məbləğ:\n  {round(fuelTotal, 1)} Azn\n", font=("Comic Sans Ms", 23), bg="#fff").place(x=0, y=0)
+            Label(odeFrame, text=f"\n\nYanacaq üçün ödənilməli məbləğ:\n  {round(fuelTotal, 1)} Azn\n", font=("Comic Sans Ms", 23), bg="#fff").place(x=40, y=0)
             odeBut2 = Button(odeFrame, text="Ödə", font=("Georgia", 23, "bold"), width=7, fg="white", bg="green", command=ode2)
-            odeBut2.place(x=180, y=230)
+            odeBut2.place(x=200, y=230)
         ode = Button(gameFrame, text="Ödə", font=("Georgia", 30, "bold"), width=15, fg="white", bg="green", command=odemek)
         ode.place(x=600, y=250)
     
@@ -639,18 +647,29 @@ def market():
 
 
                     def odemek():
+
                         def dest():
                             odeFrame.destroy()
+
                         def ode2():
                             odeBut2.destroy()
                             Label(odeFrame, text="Ödəniş edildi", font=("Comic Sans Ms", 20), bg="#fff", fg="green").place(x=190, y=235)
                             root.after(2000, dest)
                             root.after(1000, animateLeft)
-                                
+
+                        def yeniden():
+                            gameFrame.forget()
+                            girisFrame.pack(fill=BOTH, expand=True)
+                            showStartScreen()
+
                         def animateLeft(steps=105, delay=30):
                             if steps > 0:
                                 gameFrame.move(masin, -5, 0)
                                 root.after(delay, lambda: animateLeft(steps-1, delay))
+
+                            else:
+                                butRestart = Button(gameFrame, text="Yenidən oyna", fg="white", bg="green", font=("Comic Sans Ms", 45), command=yeniden)
+                                butRestart.place(x=550, y=40)
 
 
                         odeFrame = Frame(gameFrame, width=550, height=300, bg="#fff")

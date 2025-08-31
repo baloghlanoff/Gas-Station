@@ -100,9 +100,6 @@ def moveCar(event):
         gameFrame.forget()
 
 
-
-
-
 a92Frame = None
 a95Frame = None
 dieselFrame = None
@@ -412,9 +409,6 @@ def goToMarket():
     xeyrBut.place(x=850, y=250)
 
 
-
-
-
 burgerCount = IntVar(value=0)
 pizzaCount = IntVar(value=0)
 cheesyCount = IntVar(value=0)
@@ -620,7 +614,7 @@ def market():
 
         def move(event):
             global adam_x, adam_y, adam, adamFlip, adamId, minButton
-            step1 = 15
+            step1 = 10
             
 
             if abs(adam_x - firstCordinate_x) < 50 and abs(adam_y - firstCordinate_y) < 50:   
@@ -701,10 +695,6 @@ def market():
     Button(marketFrame, text="Hotdog", font=("Comic Sans Ms", 25), width=5, bg="yellow", command=hotdog).place(x=1110, y=650)
     Button(marketFrame, text="Total", font=("Comic Sans Ms", 25), width=5, bg="yellow", command=updateTotal).place(x=100, y=10)
     
-
-
-
-
 showStartScreen()
 
 root.mainloop() 
